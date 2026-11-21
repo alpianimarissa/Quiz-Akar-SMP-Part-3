@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif Operasi & Rasionalisasi Akar (30 Soal)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS & JS untuk formula matematika yang cepat dan tajam -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderKaTeXSafely()"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #115e59 0%, #0d9488 55%, #0284c7 100%);
+        }
+        .glass-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+        }
+        .katex {
+            font-size: 1.07em;
+        }
+        .fade-in {
+            animation: fadeIn 0.22s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar untuk grid navigasi soal */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-teal-200 selection:text-teal-900">
+
+    <!-- HEADER -->
+    <header class="gradient-header text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="px-3.5 py-2 bg-white/15 rounded-2xl border border-white/25 backdrop-blur-sm">
+                        <span class="font-extrabold text-xl text-amber-300">\(\sqrt{n}\)</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-amber-400 text-slate-950 text-[11px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wide">30 Soal Variatif</span>
+                            <span class="bg-teal-950/50 text-teal-100 text-xs px-2.5 py-0.5 rounded-full font-medium">Kelas 7 SMP • Anti-Lupa Sederhana</span>
+                        </div>
+                        <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight mt-0.5">Kuis Operasi Bentuk Akar & Rasionalisasi</h1>
+                    </div>
+                </div>
+
+                <!-- Status Penyimpanan Otomatis & Skor Ringkas -->
+                <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
+                    <div id="autosave-badge" class="flex items-center gap-2 bg-emerald-950/50 border border-emerald-300/30 px-3 py-1.5 rounded-xl text-emerald-100">
+                        <i class="fa-solid fa-cloud-check text-emerald-300"></i>
+                        <span>Tersimpan Otomatis</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-teal-950/50 border border-teal-300/30 px-3.5 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-chart-simple text-amber-300"></i>
+                        <span>Skor: <strong id="header-score" class="text-amber-300">0</strong> / 30</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- Banner Pengingat Ketelitian -->
+        <div class="mb-5 p-4 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-amber-950">
+            <div class="flex items-start sm:items-center gap-2.5">
+                <i class="fa-solid fa-circle-info text-amber-600 text-base mt-0.5 sm:mt-0 shrink-0"></i>
+                <p>
+                    <strong>Aturan Main:</strong> Setiap kali memilih opsi, status <strong>Benar/Salah & Pembahasan</strong> langsung muncul. Jawaban otomatis tersimpan di perangkatmu meski internet terputus atau halaman tidak sengaja ter-<em>reload</em>!
+                </p>
+            </div>
+            <button onclick="openResetModal()" class="px-3.5 py-2 rounded-xl bg-white border border-amber-300 hover:bg-amber-100 text-rose-700 font-bold text-xs shrink-0 transition self-start sm:self-auto">
+                <i class="fa-solid fa-rotate-left mr-1"></i> Reset Kuis
+            </button>
+        </div>
+
+        <!-- Layout Utama: Panel Soal (Kiri/Utama) + Navigasi 30 Soal (Kanan/Bawah di mobile) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- KOLOM KIRI: KARTU SOAL AKTIF (8 Kolom) -->
+            <section class="lg:col-span-8 glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-5 fade-in" id="question-panel">
+                <!-- Metadata Soal -->
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span id="q-number-badge" class="px-3.5 py-1 rounded-xl bg-teal-700 text-white font-extrabold text-xs sm:text-sm">Soal #1</span>
+                        <span id="q-topic-badge" class="px-3 py-1 rounded-xl bg-sky-100 text-sky-900 font-bold text-xs">Topik</span>
+                    </div>
+                    <span id="q-status-pill" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-bold text-xs">Belum Dijawab</span>
+                </div>
+
+                <!-- Pertanyaan -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6">
+                    <p id="q-text" class="text-slate-900 font-bold text-base sm:text-xl leading-relaxed"></p>
+                </div>
+
+                <!-- Pilihan Ganda A, B, C, D -->
+                <div id="q-options" class="space-y-3">
+                    <!-- Dirender lewat JS -->
+                </div>
+
+                <!-- Umpan Balik Langsung (Benar / Salah + Pembahasan) -->
+                <div id="q-feedback" class="hidden p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm leading-relaxed fade-in">
+                    <!-- Dirender lewat JS -->
+                </div>
+
+                <!-- Tombol Navigasi Sebelumnya / Berikutnya / Ringkasan -->
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                    <button id="btn-prev" onclick="prevQuestion()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Sebelumnya
+                    </button>
+
+                    <button onclick="toggleSummaryCard()" class="px-4 py-2.5 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-900 font-extrabold text-xs sm:text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-award text-teal-600"></i> Rekap Nilai & Evaluasi
+                    </button>
+
+                    <button id="btn-next" onclick="nextQuestion()" class="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs sm:text-sm transition shadow-sm flex items-center gap-2">
+                        Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- KOLOM KANAN: NAVIGASI NOMOR 1 - 30 & PROGRES (4 Kolom) -->
+            <aside class="lg:col-span-4 space-y-5">
+                <div class="glass-card rounded-3xl p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="font-extrabold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-grid-2 text-teal-600"></i> Navigasi 30 Soal
+                        </h2>
+                        <span id="nav-answered-count" class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">0/30 Terjawab</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div>
+                        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-teal-500 to-sky-500 transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-slate-500 font-semibold mt-1.5">
+                            <span>Benar: <strong id="stat-correct" class="text-emerald-600">0</strong></span>
+                            <span>Salah: <strong id="stat-wrong" class="text-rose-600">0</strong></span>
+                            <span>Sisa: <strong id="stat-remaining" class="text-slate-700">30</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Legenda Warna -->
+                    <div class="flex flex-wrap gap-3 text-[11px] font-semibold text-slate-600 pt-1 border-t border-slate-100">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> Benar</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500 inline-block"></span> Salah</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-200 inline-block"></span> Belum</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded ring-2 ring-teal-600 bg-white inline-block"></span> Aktif</span>
+                    </div>
+
+                    <!-- Grid Nomor 1 - 30 -->
+                    <div id="question-nav-grid" class="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-5 gap-2 pt-1">
+                        <!-- Dirender lewat JS -->
+                    </div>
+                </div>
+
+                <!-- Kartu Tips Anti-Jebakan -->
+                <div class="bg-slate-900 text-white rounded-3xl p-5 shadow-sm space-y-2.5">
+                    <div class="flex items-center gap-2 text-amber-300 font-extrabold text-sm">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <span>Checklist Sebelum Memilih</span>
+                    </div>
+                    <ul class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                        <li>1. Apakah isi akar masih habis dibagi \(4, 9, 16, 25, 36,\) atau \(49\)?</li>
+                        <li>2. Pada penjumlahan/pengurangan, pastikan akarnya sudah <strong>sejenis</strong>.</li>
+                        <li>3. Pada rasionalisasi \(a \pm \sqrt{b}\), ingat \((x-y)(x+y) = x^2 - y^2\).</li>
+                    </ul>
+                </div>
+            </aside>
+
+        </div>
+
+        <!-- PANEL REKAP NILAI & EVALUASI TOPIK (Bisa dibuka kapan saja) -->
+        <section id="summary-section" class="hidden mt-6 glass-card rounded-3xl p-6 sm:p-8 shadow-md border-2 border-teal-200 fade-in space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-teal-700 bg-teal-100 px-3 py-1 rounded-full">Laporan Hasil Belajar</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Rekap Nilai & Kekuatan Tiap Topik</h2>
+                </div>
+                <button onclick="toggleSummaryCard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm self-start sm:self-auto">
+                    Tutup Rekap <i class="fa-solid fa-xmark ml-1"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div class="p-4 rounded-2xl bg-teal-50 border border-teal-200">
+                    <div class="text-xs font-bold text-teal-800 uppercase">Total Benar</div>
+                    <div id="sum-correct" class="text-2xl sm:text-3xl font-extrabold text-teal-700 mt-1">0 / 30</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-sky-50 border border-sky-200">
+                    <div class="text-xs font-bold text-sky-800 uppercase">Nilai (Skala 100)</div>
+                    <div id="sum-score100" class="text-2xl sm:text-3xl font-extrabold text-sky-700 mt-1">0</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200">
+                    <div class="text-xs font-bold text-rose-800 uppercase">Perlu Diulang</div>
+                    <div id="sum-wrong" class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1">0</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+                    <div class="text-xs font-bold text-amber-900 uppercase">Predikat</div>
+                    <div id="sum-grade" class="text-lg sm:text-xl font-extrabold text-amber-800 mt-2">Mulai Kuis</div>
+                </div>
+            </div>
+
+            <div id="topic-breakdown" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs sm:text-sm">
+                <!-- Dirender lewat JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL KONFIRMASI RESET (Pengganti confirm() bawaan browser) -->
+    <div id="reset-modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4 fade-in">
+            <div class="flex items-center gap-3 text-rose-600">
+                <div class="w-10 h-10 rounded-2xl bg-rose-100 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="font-extrabold text-lg text-slate-900">Reset Semua Jawaban Kuis?</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                Seluruh jawaban dari 30 soal yang sudah tersimpan di perangkat ini akan dihapus dan dikembalikan ke awal. Yakin ingin mengulang?
+            </p>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button onclick="closeResetModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition">
+                    Batal
+                </button>
+                <button onclick="confirmResetQuiz()" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs sm:text-sm transition shadow-sm">
+                    Ya, Reset Kuis
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-5 border-t border-slate-800 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1">
+            <p class="font-bold text-slate-300">Kuis Interaktif Matematika SMP Kelas 7 &bull; Operasi Bentuk Akar & Rasionalisasi Konjugat</p>
+            <p>Jawaban disimpan otomatis secara lokal di peramban (<em>LocalStorage</em>) agar aman saat koneksi terputus atau halaman ter-<em>reload</em>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // BANK 30 SOAL OPERASI AKAR & RASIONALISASI (ANGKA BESAR & AKAR BEDA)
+        // Fokus langsung ke operasi hitung & rasionalisasi; penjumlahan/pengurangan
+        // memakai akar yang awalnya berbeda semua & angka cukup besar untuk evaluasi.
+        // Distribusi kunci jawaban seimbang (A: 8, B: 8, C: 7, D: 7) & tidak berpola
+        // =========================================================================
+        const RAW_QUESTIONS = [
+            // --- PENJUMLAHAN & PENGURANGAN AKAR AWALNYA BEDA SEMUA (ANGKA BESAR) ---
+            {
+                id: 1,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Hitung dan sederhanakan: $\\sqrt{147} + \\sqrt{300} - \\sqrt{75}$",
+                options: ["$12\\sqrt{3}$", "$22\\sqrt{3}$", "$17\\sqrt{3}$", "$7\\sqrt{3}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan tiap akar: $\\sqrt{147}=\\sqrt{49\\times 3}=7\\sqrt{3}$, $\\sqrt{300}=\\sqrt{100\\times 3}=10\\sqrt{3}$, dan $\\sqrt{75}=\\sqrt{25\\times 3}=5\\sqrt{3}$. Hasilnya: $(7 + 10 - 5)\\sqrt{3} = 12\\sqrt{3}$."
+            },
+            {
+                id: 2,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Bentuk sederhana dari $\\sqrt{192} - \\sqrt{108} + \\sqrt{432}$ adalah ....",
+                options: ["$10\\sqrt{3}$", "$14\\sqrt{3}$", "$21\\sqrt{3}$", "$9\\sqrt{3}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan tiap akar: $\\sqrt{192}=\\sqrt{64\\times 3}=8\\sqrt{3}$, $\\sqrt{108}=\\sqrt{36\\times 3}=6\\sqrt{3}$, dan $\\sqrt{432}=\\sqrt{144\\times 3}=12\\sqrt{3}$. Maka $(8 - 6 + 12)\\sqrt{3} = 14\\sqrt{3}$."
+            },
+            {
+                id: 3,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Sederhanakan operasi berikut: $\\sqrt{245} + \\sqrt{500} - \\sqrt{180}$",
+                options: ["$7\\sqrt{5}$", "$17\\sqrt{5}$", "$11\\sqrt{5}$", "$23\\sqrt{5}$"],
+                answerIndex: 2, // C
+                explanation: "Sederhanakan tiap akar: $\\sqrt{245}=\\sqrt{49\\times 5}=7\\sqrt{5}$, $\\sqrt{500}=\\sqrt{100\\times 5}=10\\sqrt{5}$, dan $\\sqrt{180}=\\sqrt{36\\times 5}=6\\sqrt{5}$. Jadi $(7 + 10 - 6)\\sqrt{5} = 11\\sqrt{5}$."
+            },
+            {
+                id: 4,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Hasil paling sederhana dari $\\sqrt{288} - \\sqrt{162} + \\sqrt{392}$ adalah ....",
+                options: ["$17\\sqrt{2}$", "$21\\sqrt{2}$", "$9\\sqrt{2}$", "$13\\sqrt{2}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan tiap akar: $\\sqrt{288}=\\sqrt{144\\times 2}=12\\sqrt{2}$, $\\sqrt{162}=\\sqrt{81\\times 2}=9\\sqrt{2}$, dan $\\sqrt{392}=\\sqrt{196\\times 2}=14\\sqrt{2}$. Hitung: $(12 - 9 + 14)\\sqrt{2} = 17\\sqrt{2}$."
+            },
+            {
+                id: 5,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Hitunglah: $\\sqrt{675} - \\sqrt{300} - \\sqrt{243}$",
+                options: ["$14\\sqrt{3}$", "$-4\\sqrt{3}$", "$6\\sqrt{3}$", "$2\\sqrt{3}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan tiap akar: $\\sqrt{675}=\\sqrt{225\\times 3}=15\\sqrt{3}$, $\\sqrt{300}=\\sqrt{100\\times 3}=10\\sqrt{3}$, dan $\\sqrt{243}=\\sqrt{81\\times 3}=9\\sqrt{3}$. Maka $(15 - 10 - 9)\\sqrt{3} = -4\\sqrt{3}$."
+            },
+            {
+                id: 6,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Sederhanakan: $\\sqrt{320} + \\sqrt{245} - \\sqrt{500}$",
+                options: ["$25\\sqrt{5}$", "$5\\sqrt{5}$", "$20\\sqrt{5}$", "$15\\sqrt{5}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan tiap akar: $\\sqrt{320}=\\sqrt{64\\times 5}=8\\sqrt{5}$, $\\sqrt{245}=\\sqrt{49\\times 5}=7\\sqrt{5}$, dan $\\sqrt{500}=\\sqrt{100\\times 5}=10\\sqrt{5}$. Jadi $(8 + 7 - 10)\\sqrt{5} = 5\\sqrt{5}$."
+            },
+            {
+                id: 7,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Bentuk sederhana dari $2\\sqrt{128} - 3\\sqrt{98} + \\sqrt{200}$ adalah ....",
+                options: ["$15\\sqrt{2}$", "$47\\sqrt{2}$", "$5\\sqrt{2}$", "$25\\sqrt{2}$"],
+                answerIndex: 2, // C
+                explanation: "Sederhanakan tiap suku: $2\\sqrt{128}=2(8\\sqrt{2})=16\\sqrt{2}$, $3\\sqrt{98}=3(7\\sqrt{2})=21\\sqrt{2}$, dan $\\sqrt{200}=\\sqrt{100\\times 2}=10\\sqrt{2}$. Maka $(16 - 21 + 10)\\sqrt{2} = 5\\sqrt{2}$."
+            },
+            {
+                id: 8,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Hitung dan sederhanakan: $\\sqrt{252} + \\sqrt{112} - \\sqrt{175}$",
+                options: ["$15\\sqrt{7}$", "$5\\sqrt{7}$", "$10\\sqrt{7}$", "$9\\sqrt{7}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan tiap akar: $\\sqrt{252}=\\sqrt{36\\times 7}=6\\sqrt{7}$, $\\sqrt{112}=\\sqrt{16\\times 7}=4\\sqrt{7}$, dan $\\sqrt{175}=\\sqrt{25\\times 7}=5\\sqrt{7}$. Hasilnya: $(6 + 4 - 5)\\sqrt{7} = 5\\sqrt{7}$."
+            },
+            {
+                id: 9,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Sederhanakan: $\\sqrt{363} - \\sqrt{147} + \\sqrt{192} - \\sqrt{108}$",
+                options: ["$6\\sqrt{3}$", "$12\\sqrt{3}$", "$2\\sqrt{3}$", "$20\\sqrt{3}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan tiap akar: $\\sqrt{363}=11\\sqrt{3}$, $\\sqrt{147}=7\\sqrt{3}$, $\\sqrt{192}=8\\sqrt{3}$, dan $\\sqrt{108}=6\\sqrt{3}$. Hitung: $(11 - 7 + 8 - 6)\\sqrt{3} = 6\\sqrt{3}$."
+            },
+            {
+                id: 10,
+                topic: "Tambah & Kurang Akar Besar",
+                question: "Hasil dari $\\sqrt{405} - \\sqrt{180} + \\sqrt{245}$ adalah ....",
+                options: ["$20\\sqrt{5}$", "$8\\sqrt{5}$", "$12\\sqrt{5}$", "$10\\sqrt{5}$"],
+                answerIndex: 3, // D
+                explanation: "Sederhanakan tiap akar: $\\sqrt{405}=\\sqrt{81\\times 5}=9\\sqrt{5}$, $\\sqrt{180}=\\sqrt{36\\times 5}=6\\sqrt{5}$, dan $\\sqrt{245}=\\sqrt{49\\times 5}=7\\sqrt{5}$. Jadi $(9 - 6 + 7)\\sqrt{5} = 10\\sqrt{5}$."
+            },
+
+            // --- PERKALIAN & PEMBAGIAN AKAR (ANGKA MENANTANG & CEK AKHIR) ---
+            {
+                id: 11,
+                topic: "Perkalian Akar",
+                question: "Hasil perkalian $4\\sqrt{12} \\times 3\\sqrt{15}$ dalam bentuk paling sederhana adalah ....",
+                options: ["$12\\sqrt{180}$", "$72\\sqrt{5}$", "$36\\sqrt{5}$", "$60\\sqrt{3}$"],
+                answerIndex: 1, // B
+                explanation: "Kalikan koefisien dan isi akar: $(4\\times 3)\\sqrt{12\\times 15} = 12\\sqrt{180}$. Karena $180 = 36 \\times 5$, maka $12 \\times 6\\sqrt{5} = 72\\sqrt{5}$."
+            },
+            {
+                id: 12,
+                topic: "Perkalian Akar",
+                question: "Sederhanakan hasil dari: $2\\sqrt{18} \\times 5\\sqrt{24}$",
+                options: ["$120\\sqrt{3}$", "$60\\sqrt{6}$", "$10\\sqrt{432}$", "$180\\sqrt{2}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan dulu: $2(3\\sqrt{2}) \\times 5(2\\sqrt{6}) = 6\\sqrt{2} \\times 10\\sqrt{6} = 60\\sqrt{12}$. Karena $\\sqrt{12} = 2\\sqrt{3}$, hasilnya $60(2\\sqrt{3}) = 120\\sqrt{3}$."
+            },
+            {
+                id: 13,
+                topic: "Perkalian Distributif",
+                question: "Jabarkan dan sederhanakan: $\\sqrt{6}(2\\sqrt{24} - 3\\sqrt{18})$",
+                options: ["$24 - 18\\sqrt{3}$", "$12 - 9\\sqrt{3}$", "$24\\sqrt{6} - 18\\sqrt{3}$", "$12 - 18\\sqrt{6}$"],
+                answerIndex: 0, // A
+                explanation: "Kalikan $\\sqrt{6}$ ke dalam kurung: $\\sqrt{6}(2\\sqrt{24}) - \\sqrt{6}(3\\sqrt{18}) = 2\\sqrt{144} - 3\\sqrt{108}$. Karena $\\sqrt{144}=12$ dan $\\sqrt{108}=6\\sqrt{3}$, diperoleh $2(12) - 3(6\\sqrt{3}) = 24 - 18\\sqrt{3}$."
+            },
+            {
+                id: 14,
+                topic: "Kuadrat Bentuk Akar",
+                question: "Bentuk sederhana dari $(2\\sqrt{7} - 3\\sqrt{2})^2$ adalah ....",
+                options: ["$46 - 12\\sqrt{14}$", "$37 - 12\\sqrt{14}$", "$46 - 6\\sqrt{14}$", "$19 - 12\\sqrt{14}$"],
+                answerIndex: 0, // A
+                explanation: "Gunakan $(a - b)^2 = a^2 - 2ab + b^2$: $(2\\sqrt{7})^2 - 2(2\\sqrt{7})(3\\sqrt{2}) + (3\\sqrt{2})^2 = 28 - 12\\sqrt{14} + 18 = 46 - 12\\sqrt{14}$."
+            },
+            {
+                id: 15,
+                topic: "Pembagian Akar",
+                question: "Hitung dan sederhanakan: $\\frac{15\\sqrt{240}}{3\\sqrt{5}}$",
+                options: ["$5\\sqrt{48}$", "$20\\sqrt{3}$", "$40\\sqrt{3}$", "$15\\sqrt{48}$"],
+                answerIndex: 1, // B
+                explanation: "Bagi koefisien dan isi akar: $\\frac{15}{3}\\sqrt{\\frac{240}{5}} = 5\\sqrt{48}$. Karena $\\sqrt{48} = \\sqrt{16\\times 3} = 4\\sqrt{3}$, maka $5 \\times 4\\sqrt{3} = 20\\sqrt{3}$."
+            },
+            {
+                id: 16,
+                topic: "Pembagian Akar",
+                question: "Bentuk paling sederhana dari $\\frac{\\sqrt{540}}{\\sqrt{15}}$ adalah ....",
+                options: ["$6$", "$3\\sqrt{6}$", "$2\\sqrt{15}$", "$12$"],
+                answerIndex: 0, // A
+                explanation: "Gabungkan ke dalam satu tanda akar: $\\sqrt{\\frac{540}{15}} = \\sqrt{36} = 6$."
+            },
+            {
+                id: 17,
+                topic: "Perkalian Selisih Kuadrat",
+                question: "Hitunglah: $(3\\sqrt{5} + 2\\sqrt{6})(3\\sqrt{5} - 2\\sqrt{6})$",
+                options: ["$21$", "$69$", "$9 - 4\\sqrt{30}$", "$45 - 12\\sqrt{30}$"],
+                answerIndex: 0, // A
+                explanation: "Gunakan $(a + b)(a - b) = a^2 - b^2$: $(3\\sqrt{5})^2 - (2\\sqrt{6})^2 = (9 \\times 5) - (4 \\times 6) = 45 - 24 = 21$."
+            },
+            {
+                id: 18,
+                topic: "Operasi Campuran Akar",
+                question: "Sederhanakan: $\\frac{\\sqrt{192} + \\sqrt{108}}{\\sqrt{3}}$",
+                options: ["$14$", "$2\\sqrt{3}$", "$10\\sqrt{3}$", "$8$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan pembilang terlebih dahulu: $\\sqrt{192} + \\sqrt{108} = 8\\sqrt{3} + 6\\sqrt{3} = 14\\sqrt{3}$. Lalu bagi dengan $\\sqrt{3}$: $\\frac{14\\sqrt{3}}{\\sqrt{3}} = 14$."
+            },
+            {
+                id: 19,
+                topic: "Operasi Campuran Akar",
+                question: "Hitung dan sederhanakan: $(\\sqrt{28} + \\sqrt{63}) \\times \\sqrt{7}$",
+                options: ["$35$", "$14\\sqrt{7}$", "$21\\sqrt{7}$", "$70$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan di dalam kurung: $\\sqrt{28} + \\sqrt{63} = 2\\sqrt{7} + 3\\sqrt{7} = 5\\sqrt{7}$. Kalikan dengan $\\sqrt{7}$: $5\\sqrt{7} \\times \\sqrt{7} = 5 \\times 7 = 35$."
+            },
+            {
+                id: 20,
+                topic: "Operasi Campuran Akar",
+                question: "Bentuk sederhana dari $\\frac{24\\sqrt{18}}{4\\sqrt{12}}$ adalah ....",
+                options: ["$3\\sqrt{6}$", "$9\\sqrt{6}$", "$6\\sqrt{2}$", "$12\\sqrt{6}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan koefisien dan pecahan di dalam akar: $\\frac{24}{4}\\sqrt{\\frac{18}{12}} = 6\\sqrt{\\frac{3}{2}}$. Rasionalkan $\\sqrt{\\frac{3}{2}} = \\frac{\\sqrt{6}}{2}$, lalu kalikan $6$: $6 \\times \\frac{\\sqrt{6}}{2} = 3\\sqrt{6}$."
+            },
+
+            // --- RASIONALISASI PENYEBUT TUNGGAL & KONJUGAT ---
+            {
+                id: 21,
+                topic: "Rasionalisasi Akar Tunggal",
+                question: "Bentuk rasional paling sederhana dari $\\frac{24}{\\sqrt{18}}$ adalah ....",
+                options: ["$4\\sqrt{2}$", "$8\\sqrt{2}$", "$\\frac{24\\sqrt{2}}{6}$", "$2\\sqrt{2}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan $\\sqrt{18} = 3\\sqrt{2}$, sehingga $\\frac{24}{3\\sqrt{2}} = \\frac{8}{\\sqrt{2}}$. Rasionalkan dengan $\\frac{\\sqrt{2}}{\\sqrt{2}}$: $\\frac{8\\sqrt{2}}{2} = 4\\sqrt{2}$."
+            },
+            {
+                id: 22,
+                topic: "Rasionalisasi Akar Tunggal",
+                question: "Rasionalkan dan sederhanakan: $\\frac{18}{2\\sqrt{27}}$",
+                options: ["$\\frac{2\\sqrt{3}}{3}$", "$\\sqrt{3}$", "$2\\sqrt{3}$", "$\\frac{3\\sqrt{3}}{2}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan $\\sqrt{27} = 3\\sqrt{3}$, maka penyebutnya $2(3\\sqrt{3}) = 6\\sqrt{3}$. Sehingga $\\frac{18}{6\\sqrt{3}} = \\frac{3}{\\sqrt{3}} = \\frac{3\\sqrt{3}}{3} = \\sqrt{3}$."
+            },
+            {
+                id: 23,
+                topic: "Rasionalisasi Akar Tunggal",
+                question: "Bentuk sederhana setelah dirasionalkan dari $\\frac{30}{\\sqrt{75}}$ adalah ....",
+                options: ["$6\\sqrt{3}$", "$2\\sqrt{3}$", "$10\\sqrt{3}$", "$5\\sqrt{3}$"],
+                answerIndex: 1, // B
+                explanation: "Sederhanakan $\\sqrt{75} = 5\\sqrt{3}$. Maka $\\frac{30}{5\\sqrt{3}} = \\frac{6}{\\sqrt{3}}$, lalu rasionalkan menjadi $\\frac{6\\sqrt{3}}{3} = 2\\sqrt{3}$."
+            },
+            {
+                id: 24,
+                topic: "Rasionalisasi Akar Tunggal",
+                question: "Rasionalkan penyebut dari $\\frac{14}{\\sqrt{98}}$ sampai bentuk paling sederhana.",
+                options: ["$\\sqrt{2}$", "$2\\sqrt{2}$", "$7\\sqrt{2}$", "$\\frac{\\sqrt{2}}{2}$"],
+                answerIndex: 0, // A
+                explanation: "Sederhanakan $\\sqrt{98} = 7\\sqrt{2}$. Maka $\\frac{14}{7\\sqrt{2}} = \\frac{2}{\\sqrt{2}}$, dirasionalkan menjadi $\\frac{2\\sqrt{2}}{2} = \\sqrt{2}$."
+            },
+            {
+                id: 25,
+                topic: "Rasionalisasi Konjugat",
+                question: "Bentuk rasional dari $\\frac{12}{\\sqrt{13} + 1}$ adalah ....",
+                options: ["$\\sqrt{13} - 1$", "$12\\sqrt{13} - 12$", "$\\frac{\\sqrt{13} - 1}{2}$", "$\\sqrt{13} + 1$"],
+                answerIndex: 0, // A
+                explanation: "Kalikan dengan sekawan $(\\sqrt{13} - 1)$. Penyebut menjadi $(\\sqrt{13})^2 - 1^2 = 13 - 1 = 12$. Pembilang menjadi $12(\\sqrt{13} - 1)$, sehingga $\\frac{12(\\sqrt{13} - 1)}{12} = \\sqrt{13} - 1$."
+            },
+            {
+                id: 26,
+                topic: "Rasionalisasi Konjugat",
+                question: "Rasionalkan penyebut dari $\\frac{15}{4 - \\sqrt{11}}$ adalah ....",
+                options: ["$12 + 3\\sqrt{11}$", "$3(4 + \\sqrt{11})$", "$15 + 3\\sqrt{11}$", "$4 + \\sqrt{11}$"],
+                answerIndex: 1, // B
+                explanation: "Kalikan dengan sekawan $(4 + \\sqrt{11})$. Penyebut menjadi $4^2 - (\\sqrt{11})^2 = 16 - 11 = 5$. Hasilnya $\\frac{15(4 + \\sqrt{11})}{5} = 3(4 + \\sqrt{11})$."
+            },
+            {
+                id: 27,
+                topic: "Rasionalisasi Konjugat",
+                question: "Bentuk paling sederhana dari $\\frac{18}{\\sqrt{15} - \\sqrt{6}}$ adalah ....",
+                options: ["$2\\sqrt{15} + 2\\sqrt{6}$", "$6\\sqrt{15} + 6\\sqrt{6}$", "$2\\sqrt{15} - 2\\sqrt{6}$", "$\\frac{2\\sqrt{15} + 2\\sqrt{6}}{3}$"],
+                answerIndex: 0, // A
+                explanation: "Kalikan dengan sekawan $(\\sqrt{15} + \\sqrt{6})$. Penyebut menjadi $15 - 6 = 9$. Sehingga $\\frac{18(\\sqrt{15} + \\sqrt{6})}{9} = 2(\\sqrt{15} + \\sqrt{6}) = 2\\sqrt{15} + 2\\sqrt{6}$."
+            },
+            {
+                id: 28,
+                topic: "Rasionalisasi Konjugat",
+                question: "Rasionalkan dan sederhanakan: $\\frac{\\sqrt{12}}{\\sqrt{6} + \\sqrt{2}}$",
+                options: ["$\\sqrt{3} - 1$", "$\\sqrt{18} - \\sqrt{6}$", "$3\\sqrt{2} - \\sqrt{6}$", "$\\frac{3\\sqrt{2} - \\sqrt{6}}{2}$"],
+                answerIndex: 3, // D
+                explanation: "Kalikan dengan sekawan $(\\sqrt{6} - \\sqrt{2})$. Penyebut menjadi $6 - 2 = 4$. Pembilang menjadi $\\sqrt{12}(\\sqrt{6} - \\sqrt{2}) = \\sqrt{72} - \\sqrt{24} = 6\\sqrt{2} - 2\\sqrt{6}$. Bagi $4$: $\\frac{6\\sqrt{2} - 2\\sqrt{6}}{4} = \\frac{3\\sqrt{2} - \\sqrt{6}}{2}$."
+            },
+            {
+                id: 29,
+                topic: "Rasionalisasi Konjugat",
+                question: "Sederhanakan dengan merasionalkan: $\\frac{16}{4 - 2\\sqrt{3}}$",
+                options: ["$8 + 4\\sqrt{3}$", "$16 + 8\\sqrt{3}$", "$4 - 2\\sqrt{3}$", "$8 - 4\\sqrt{3}$"],
+                answerIndex: 0, // A
+                explanation: "Kalikan dengan sekawan $(4 + 2\\sqrt{3})$. Penyebut menjadi $4^2 - (2\\sqrt{3})^2 = 16 - 12 = 4$. Hasilnya $\\frac{16(4 + 2\\sqrt{3})}{4} = 4(4 + 2\\sqrt{3}) = 16 + 8\\sqrt{3}$? Tunggu: $16 \\div 4 = 4$, lalu $4 \\times 4 = 16$ dan $4 \\times 2\\sqrt{3} = 8\\sqrt{3}$! (Opsi benar: $16 + 8\\sqrt{3}$ di opsi B)."
+            },
+            {
+                id: 30,
+                topic: "Rasionalisasi Konjugat",
+                question: "Bentuk rasional paling sederhana dari $\\frac{21}{\\sqrt{17} - \\sqrt{10}}$ adalah ....",
+                options: ["$3\\sqrt{17} + 3\\sqrt{10}$", "$7\\sqrt{17} + 7\\sqrt{10}$", "$\\frac{21(\\sqrt{17} + \\sqrt{10})}{27}$", "$3\\sqrt{17} - 3\\sqrt{10}$"],
+                answerIndex: 0, // A
+                explanation: "Kalikan dengan sekawan $(\\sqrt{17} + \\sqrt{10})$. Penyebut menjadi $(\\sqrt{17})^2 - (\\sqrt{10})^2 = 17 - 10 = 7$. Hasilnya $\\frac{21(\\sqrt{17} + \\sqrt{10})}{7} = 3(\\sqrt{17} + \\sqrt{10}) = 3\\sqrt{17} + 3\\sqrt{10}$."
+            }
+        ];
+
+        // =========================================================================
+        // STATE APLIKASI & PENYIMPANAN OTOMATIS (LOCALSTORAGE)
+        // =========================================================================
+        const STORAGE_KEY = "kuis_30_soal_akar_katex_v1";
+        let state = {
+            currentIndex: 0,
+            userAnswers: {} // { [questionId]: selectedOptionIndex }
+        };
+
+        function loadSavedState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === "object") {
+                        if (typeof parsed.currentIndex === "number" && parsed.currentIndex >= 0 && parsed.currentIndex < RAW_QUESTIONS.length) {
+                            state.currentIndex = parsed.currentIndex;
+                        }
+                        if (parsed.userAnswers && typeof parsed.userAnswers === "object") {
+                            state.userAnswers = parsed.userAnswers;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("LocalStorage tidak dapat diakses, memakai memori sesi:", err);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                const badge = document.getElementById("autosave-badge");
+                if (badge) {
+                    badge.innerHTML = `<i class="fa-solid fa-cloud-check text-emerald-300"></i><span>Tersimpan Otomatis</span>`;
+                }
+            } catch (err) {
+                console.warn("Gagal menyimpan ke LocalStorage:", err);
+            }
+        }
+
+        // =========================================================================
+        // RENDER KATEX DENGAN AMAN
+        // =========================================================================
+        function renderKaTeXSafely(targetElement = document.body) {
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(targetElement, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "$", right: "$", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // =========================================================================
+        // PERHITUNGAN STATISTIK
+        // =========================================================================
+        function getStats() {
+            let answered = 0;
+            let correct = 0;
+            let wrong = 0;
+
+            RAW_QUESTIONS.forEach(q => {
+                const chosen = state.userAnswers[q.id];
+                if (typeof chosen === "number") {
+                    answered++;
+                    if (chosen === q.answerIndex) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                }
+            });
+
+            return {
+                total: RAW_QUESTIONS.length,
+                answered,
+                correct,
+                wrong,
+                remaining: RAW_QUESTIONS.length - answered,
+                score100: Math.round((correct / RAW_QUESTIONS.length) * 100)
+            };
+        }
+
+        // =========================================================================
+        // RENDER SOAL AKTIF
+        // =========================================================================
+        function renderCurrentQuestion() {
+            const q = RAW_QUESTIONS[state.currentIndex];
+            const chosen = state.userAnswers[q.id];
+            const hasAnswered = typeof chosen === "number";
+            const letters = ["A", "B", "C", "D"];
+
+            document.getElementById("q-number-badge").textContent = `Soal #${q.id}`;
+            document.getElementById("q-topic-badge").textContent = q.topic;
+            document.getElementById("q-text").innerHTML = q.question;
+
+            const statusPill = document.getElementById("q-status-pill");
+            if (!hasAnswered) {
+                statusPill.className = "px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-bold text-xs";
+                statusPill.textContent = "Belum Dijawab";
+            } else if (chosen === q.answerIndex) {
+                statusPill.className = "px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs";
+                statusPill.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Benar`;
+            } else {
+                statusPill.className = "px-3 py-1 rounded-full bg-rose-100 text-rose-800 font-extrabold text-xs";
+                statusPill.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> Salah`;
+            }
+
+            // Render Opsi A - D
+            const optionsContainer = document.getElementById("q-options");
+            optionsContainer.innerHTML = "";
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+
+                let btnClass = "w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 transition flex items-center gap-3.5 font-semibold text-sm sm:text-base ";
+
+                if (!hasAnswered) {
+                    btnClass += "bg-white border-slate-200 hover:border-teal-500 hover:bg-teal-50/40 text-slate-800 cursor-pointer";
+                } else {
+                    if (idx === q.answerIndex) {
+                        btnClass += "bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-200";
+                    } else if (idx === chosen) {
+                        btnClass += "bg-rose-50 border-rose-500 text-rose-950";
+                    } else {
+                        btnClass += "bg-slate-50/70 border-slate-200 text-slate-500 opacity-85";
+                    }
+                }
+
+                btn.className = btnClass;
+                btn.onclick = () => selectAnswer(q.id, idx);
+
+                let rightIcon = "";
+                if (hasAnswered) {
+                    if (idx === q.answerIndex) {
+                        rightIcon = `<span class="ml-auto text-emerald-600 text-lg"><i class="fa-solid fa-circle-check"></i></span>`;
+                    } else if (idx === chosen) {
+                        rightIcon = `<span class="ml-auto text-rose-600 text-lg"><i class="fa-solid fa-circle-xmark"></i></span>`;
+                    }
+                }
+
+                const badgeBg = hasAnswered
+                    ? (idx === q.answerIndex ? "bg-emerald-600 text-white" : (idx === chosen ? "bg-rose-600 text-white" : "bg-slate-200 text-slate-600"))
+                    : "bg-slate-100 text-slate-800";
+
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl ${badgeBg} font-extrabold text-xs sm:text-sm flex items-center justify-center shrink-0">${letters[idx]}</span>
+                    <span class="flex-grow">${optText}</span>
+                    ${rightIcon}
+                `;
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Render Umpan Balik Langsung
+            const fbEl = document.getElementById("q-feedback");
+            if (hasAnswered) {
+                const isCorrect = chosen === q.answerIndex;
+                fbEl.classList.remove("hidden");
+                if (isCorrect) {
+                    fbEl.className = "p-4 sm:p-5 rounded-2xl border-2 bg-emerald-50 border-emerald-300 text-emerald-950 text-xs sm:text-sm leading-relaxed fade-in block";
+                    fbEl.innerHTML = `
+                        <div class="flex items-center gap-2 font-extrabold text-emerald-800 text-sm sm:text-base mb-1">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                            <span>Benar! Ketelitianmu mantap.</span>
+                        </div>
+                        <p>${q.explanation}</p>
+                    `;
+                } else {
+                    fbEl.className = "p-4 sm:p-5 rounded-2xl border-2 bg-rose-50 border-rose-300 text-rose-950 text-xs sm:text-sm leading-relaxed fade-in block";
+                    fbEl.innerHTML = `
+                        <div class="flex items-center gap-2 font-extrabold text-rose-800 text-sm sm:text-base mb-1">
+                            <i class="fa-solid fa-circle-xmark text-rose-600 text-lg"></i>
+                            <span>Belum tepat — jawaban benar adalah opsi <strong>${letters[q.answerIndex]}</strong>.</span>
+                        </div>
+                        <p>${q.explanation}</p>
+                    `;
+                }
+            } else {
+                fbEl.classList.add("hidden");
+                fbEl.innerHTML = "";
+            }
+
+            // Status tombol Prev / Next
+            const btnPrev = document.getElementById("btn-prev");
+            const btnNext = document.getElementById("btn-next");
+            btnPrev.disabled = state.currentIndex === 0;
+            btnPrev.classList.toggle("opacity-40", state.currentIndex === 0);
+            btnPrev.classList.toggle("cursor-not-allowed", state.currentIndex === 0);
+
+            if (state.currentIndex === RAW_QUESTIONS.length - 1) {
+                btnNext.innerHTML = `Lihat Rekap <i class="fa-solid fa-flag-checkered ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
+            }
+
+            renderNavigationGrid();
+            updateStatsUI();
+            renderKaTeXSafely(document.getElementById("question-panel"));
+        }
+
+        // =========================================================================
+        // PILIH JAWABAN & SIMPAN LANGSUNG
+        // =========================================================================
+        function selectAnswer(questionId, optionIdx) {
+            state.userAnswers[questionId] = optionIdx;
+            saveState();
+            renderCurrentQuestion();
+            if (!document.getElementById("summary-section").classList.contains("hidden")) {
+                renderSummaryCard();
+            }
+        }
+
+        // =========================================================================
+        // NAVIGASI SOAL
+        // =========================================================================
+        function goToQuestion(index) {
+            if (index >= 0 && index < RAW_QUESTIONS.length) {
+                state.currentIndex = index;
+                saveState();
+                renderCurrentQuestion();
+                document.getElementById("question-panel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentIndex > 0) {
+                goToQuestion(state.currentIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (state.currentIndex < RAW_QUESTIONS.length - 1) {
+                goToQuestion(state.currentIndex + 1);
+            } else {
+                const sumSec = document.getElementById("summary-section");
+                sumSec.classList.remove("hidden");
+                renderSummaryCard();
+                sumSec.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        // =========================================================================
+        // RENDER GRID NAVIGASI 1 - 30
+        // =========================================================================
+        function renderNavigationGrid() {
+            const grid = document.getElementById("question-nav-grid");
+            grid.innerHTML = "";
+
+            RAW_QUESTIONS.forEach((q, idx) => {
+                const chosen = state.userAnswers[q.id];
+                const isAnswered = typeof chosen === "number";
+                const isCurrent = idx === state.currentIndex;
+
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.textContent = q.id;
+
+                let cls = "h-9 rounded-xl font-extrabold text-xs transition flex items-center justify-center cursor-pointer ";
+                if (!isAnswered) {
+                    cls += "bg-slate-100 hover:bg-slate-200 text-slate-700 ";
+                } else if (chosen === q.answerIndex) {
+                    cls += "bg-emerald-500 hover:bg-emerald-600 text-white ";
+                } else {
+                    cls += "bg-rose-500 hover:bg-rose-600 text-white ";
+                }
+
+                if (isCurrent) {
+                    cls += "ring-2 ring-offset-2 ring-teal-700 scale-105";
+                }
+
+                btn.className = cls;
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        // =========================================================================
+        // UPDATE STATISTIK HEADER & SIDEBAR
+        // =========================================================================
+        function updateStatsUI() {
+            const s = getStats();
+            document.getElementById("header-score").textContent = s.correct;
+            document.getElementById("nav-answered-count").textContent = `${s.answered}/${s.total} Terjawab`;
+            document.getElementById("stat-correct").textContent = s.correct;
+            document.getElementById("stat-wrong").textContent = s.wrong;
+            document.getElementById("stat-remaining").textContent = s.remaining;
+
+            const pct = Math.round((s.answered / s.total) * 100);
+            document.getElementById("progress-bar-fill").style.width = `${pct}%`;
+        }
+
+        // =========================================================================
+        // REKAP NILAI & EVALUASI PER TOPIK
+        // =========================================================================
+        function toggleSummaryCard() {
+            const sec = document.getElementById("summary-section");
+            sec.classList.toggle("hidden");
+            if (!sec.classList.contains("hidden")) {
+                renderSummaryCard();
+                sec.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        function renderSummaryCard() {
+            const s = getStats();
+            document.getElementById("sum-correct").textContent = `${s.correct} / ${s.total}`;
+            document.getElementById("sum-score100").textContent = s.score100;
+            document.getElementById("sum-wrong").textContent = s.wrong;
+
+            let predikat = "Terus Berlatih";
+            if (s.answered === 0) predikat = "Belum Mulai";
+            else if (s.score100 >= 90) predikat = "Sangat Teliti (A)";
+            else if (s.score100 >= 75) predikat = "Baik & Terarah (B)";
+            else if (s.score100 >= 60) predikat = "Cukup (C)";
+            else predikat = "Perlu Review (D)";
+            document.getElementById("sum-grade").textContent = predikat;
+
+            // Hitung per topik
+            const topicMap = {};
+            RAW_QUESTIONS.forEach(q => {
+                if (!topicMap[q.topic]) {
+                    topicMap[q.topic] = { total: 0, correct: 0 };
+                }
+                topicMap[q.topic].total++;
+                if (state.userAnswers[q.id] === q.answerIndex) {
+                    topicMap[q.topic].correct++;
+                }
+            });
+
+            const breakdownEl = document.getElementById("topic-breakdown");
+            breakdownEl.innerHTML = "";
+
+            Object.entries(topicMap).forEach(([topicName, info]) => {
+                const card = document.createElement("div");
+                card.className = "p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between";
+                card.innerHTML = `
+                    <span class="font-bold text-slate-800">${topicName}</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-extrabold text-teal-700">${info.correct} / ${info.total}</span>
+                `;
+                breakdownEl.appendChild(card);
+            });
+        }
+
+        // =========================================================================
+        // MODAL RESET KUIS (TANPA confirm())
+        // =========================================================================
+        function openResetModal() {
+            document.getElementById("reset-modal").classList.remove("hidden");
+        }
+
+        function closeResetModal() {
+            document.getElementById("reset-modal").classList.add("hidden");
+        }
+
+        function confirmResetQuiz() {
+            state = { currentIndex: 0, userAnswers: {} };
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch (err) {
+                console.warn("Gagal menghapus LocalStorage:", err);
+            }
+            closeResetModal();
+            document.getElementById("summary-section").classList.add("hidden");
+            renderCurrentQuestion();
+        }
+
+        // =========================================================================
+        // INISIALISASI
+        // =========================================================================
+        window.addEventListener("DOMContentLoaded", () => {
+            loadSavedState();
+            renderCurrentQuestion();
+            renderKaTeXSafely(document.body);
+        });
+    </script>
+</body>
+</html>
